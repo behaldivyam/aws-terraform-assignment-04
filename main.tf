@@ -314,14 +314,10 @@ resource "aws_lb_listener" "app" {
   }
 }
 
-data "aws_ssm_parameter" "ubuntu_ami" {
-  name = "/aws/service/canonical/ubuntu/24.04/stable/current/amd64/hvm/ebs-gp3/ami-id"
-}
-
 resource "aws_launch_template" "app" {
   name = "assignment-04-launch-template"
 
-  image_id      = data.aws_ssm_parameter.ubuntu_ami.value
+  image_id      = "ami-09fad7bb72d4e6685"
   instance_type = "t3.micro"
 
   vpc_security_group_ids = [
@@ -383,7 +379,7 @@ resource "aws_autoscaling_group" "app" {
 }
 
 resource "aws_instance" "bastion" {
-  ami           = data.aws_ssm_parameter.ubuntu_ami.value
+  ami           = "ami-09fad7bb72d4e6685"
   instance_type = "t3.micro"
 
   subnet_id = aws_subnet.public_az1.id
